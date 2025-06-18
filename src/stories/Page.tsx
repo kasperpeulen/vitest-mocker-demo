@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { Header } from "./Header";
 import "./page.css";
+import { getTodos } from "../utils/todos";
 
 type User = {
   name: string;
 };
 
 export const Page: React.FC = () => {
-  const [user, setUser] = React.useState<User>();
+  const [todos, setTodos] = useState<string[]>([]);
+  useEffect(() => {
+    getTodos().then((todos) => setTodos(todos));
+  }, []);
+  const [user, setUser] = useState<User>();
 
   return (
     <article>
@@ -21,6 +26,11 @@ export const Page: React.FC = () => {
 
       <section className="storybook-page">
         <h2>Pages in Storybook</h2>
+        <ul>
+          {todos.map((todo) => (
+            <li key={todo}>{todo}</li>
+          ))}
+        </ul>
         <p>
           We recommend building UIs with a{" "}
           <a
